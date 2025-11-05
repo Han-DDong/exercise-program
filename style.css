@@ -161,6 +161,37 @@ tbody tr:nth-child(even):hover {
   box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
 }
 
+/* 헤더 dropdown 스타일 */
+#exercise-calculator-select {
+  width: 50%;
+  text-align: center;
+  background: rgba(255, 255, 255, 0.2) !important;
+  color: white !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  font-size: inherit !important;
+  font-weight: inherit !important;
+  padding: 8px 16px !important;
+  border-radius: 8px !important;
+  cursor: pointer;
+}
+
+#exercise-calculator-select:hover {
+  background: rgba(255, 255, 255, 0.3) !important;
+  border-color: rgba(255, 255, 255, 0.5) !important;
+}
+
+#exercise-calculator-select:focus {
+  outline: none;
+  background: rgba(255, 255, 255, 0.3) !important;
+  border-color: rgba(255, 255, 255, 0.6) !important;
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.2);
+}
+
+#exercise-calculator-select option {
+  background: #ff6b9d;
+  color: white;
+}
+
 .grid-container {
   display: grid;
   grid-template-columns: 1fr 1fr;
