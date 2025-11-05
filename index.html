@@ -131,10 +131,21 @@
                 </thead>
                 <tbody>
                   <tr>
-                    <td class="dropdown-cell">
-                      <select id="percentage-finder-select">
-                        <!-- 동적으로 생성됨 -->
-                      </select>
+                    <td>
+                      <div style="display: flex; align-items: center; justify-content: center; gap: 4px">
+                        <input
+                          type="text"
+                          id="percentage-finder-input"
+                          placeholder="퍼센트 입력"
+                          style="
+                            width: 100px;
+                            padding: 8px;
+                            border: 1.5px solid #d1d5db;
+                            border-radius: 8px;
+                            text-align: center;
+                          " />
+                        <span style="font-size: 16px; font-weight: 600">%</span>
+                      </div>
                     </td>
                     <td id="percent-calc">0</td>
                     <td id="percent-ceil">0</td>
@@ -173,17 +184,20 @@
                         " />
                     </td>
                     <td>
-                      <input
-                        type="text"
-                        id="reverse-percent-input"
-                        placeholder="퍼센트 입력"
-                        style="
-                          width: 100%;
-                          padding: 8px;
-                          border: 1.5px solid #d1d5db;
-                          border-radius: 8px;
-                          text-align: center;
-                        " />
+                      <div style="display: flex; align-items: center; justify-content: center; gap: 4px">
+                        <input
+                          type="text"
+                          id="reverse-percent-input"
+                          placeholder="퍼센트 입력"
+                          style="
+                            width: 100%;
+                            padding: 8px;
+                            border: 1.5px solid #d1d5db;
+                            border-radius: 8px;
+                            text-align: center;
+                          " />
+                        <span style="font-size: 16px; font-weight: 600">%</span>
+                      </div>
                     </td>
                     <td id="reverse-my-weight" class="yellow-cell">0</td>
                     <td id="reverse-ceil" class="yellow-cell">0</td>
