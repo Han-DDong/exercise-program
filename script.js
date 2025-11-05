@@ -392,20 +392,18 @@ function generateBig3() {
 
 // 퍼센트 찾기 테이블 생성
 function generatePercentageFinder() {
-  const select = document.getElementById("percentage-finder-select");
-  select.innerHTML = "";
-  const percentages = [
-    0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100, 105, 110, 115, 120, 130,
-  ];
+  const input = document.getElementById("percentage-finder-input");
+  if (!input) return;
 
-  percentages.forEach((percent) => {
-    const option = document.createElement("option");
-    option.value = percent;
-    option.textContent = `${percent}%`;
-    select.appendChild(option);
-  });
+  // 입력 이벤트 리스너 추가 (한 번만)
+  if (!input.hasAttribute("data-listener")) {
+    input.setAttribute("data-listener", "true");
+    input.addEventListener("input", () => {
+      updatePercentageFinder();
+    });
+  }
 
-  select.addEventListener("change", updatePercentageFinder);
+  // 초기 계산
   updatePercentageFinder();
 
   // 역산계산기 초기화 (한 번만)
@@ -413,10 +411,21 @@ function generatePercentageFinder() {
 }
 
 function updatePercentageFinder() {
-  const select = document.getElementById("percentage-finder-select");
-  const percent = parseFloat(select.value);
+  const input = document.getElementById("percentage-finder-input");
+  if (!input) return;
+
+  const percent = parseFloat(input.value) || 0;
   const exercise = exerciseData[selectedExercise];
   const baseWeight = exercise ? exercise.lb : 0;
+
+  if (percent === 0 || baseWeight === 0) {
+    document.getElementById("percent-calc").textContent = "0";
+    document.getElementById("percent-ceil").textContent = "0";
+    document.getElementById("percent-round").textContent = "0";
+    document.getElementById("percent-floor").textContent = "0";
+    return;
+  }
+
   const calculated = (baseWeight * percent) / 100;
 
   document.getElementById("percent-calc").textContent = Math.round(calculated);
