@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>운동 프로그램 관리 시스템</title>
+    <link
+      rel="stylesheet"
+      as="style"
+      crossorigin
+      href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css" />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <!-- 그리드 레이아웃: 총 무게표 + 운동목록 -->
+      <div class="grid-container">
+        <!-- 왼쪽 컬럼: 총 무게표 -->
+        <div>
+          <!-- 운동 종목별 퍼센트 계산기 -->
+          <div class="section">
+            <div class="section-header pink-header" id="exercise-calculator-header">프론트 스쿼트</div>
+            <div class="table-wrapper">
+              <table id="percentage-table">
+                <thead>
+                  <tr>
+                    <th>퍼센트</th>
+                    <th>계산</th>
+                    <th>올림</th>
+                    <th>반올림</th>
+                    <th>내림</th>
+                  </tr>
+                </thead>
+                <tbody id="percentage-table-body">
+                  <!-- 동적으로 생성됨 -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- 오른쪽 컬럼: 운동목록, 3대 측정, 퍼센트 찾기 -->
+        <div>
+          <!-- 운동목록 -->
+          <div class="section">
+            <div class="section-header yellow-header">운동목록</div>
+            <div style="margin-bottom: 10px; display: flex; gap: 10px; justify-content: flex-end">
+              <button class="btn-primary" id="exercise-edit-btn">수정</button>
+              <button class="btn-primary" id="exercise-add-row-btn" style="display: none">행 추가</button>
+            </div>
+            <div class="table-wrapper">
+              <table>
+                <thead>
+                  <tr>
+                    <th>운동목록</th>
+                    <th>1RM / lb</th>
+                    <th>1RM / kg</th>
+                    <th>1RM 갱신일</th>
+                    <th id="exercise-delete-header" style="display: none">삭제</th>
+                  </tr>
+                </thead>
+                <tbody id="exercise-list-body">
+                  <!-- 동적으로 생성됨 -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- 3대 측정 -->
+          <div class="section">
+            <div class="section-header red-header">3대 측정</div>
+            <div class="table-wrapper">
+              <table>
+                <thead>
+                  <tr>
+                    <th>운동목록</th>
+                    <th>1RM / kg</th>
+                  </tr>
+                </thead>
+                <tbody id="big3-body">
+                  <!-- 동적으로 생성됨 -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- 퍼센트 찾기 / 역산계산기 -->
+          <div class="section">
+            <div class="section-header yellow-header">
+              <div style="display: flex; gap: 10px; justify-content: center; align-items: center">
+                <button
+                  class="tab-btn"
+                  id="percentage-finder-tab"
+                  style="background: rgba(255, 255, 255, 0.3); border: none; color: white">
+                  퍼센트 찾기
+                </button>
+                <button
+                  class="tab-btn"
+                  id="reverse-calc-tab"
+                  style="background: transparent; border: 2px solid rgba(255, 255, 255, 0.5); color: white">
+                  역산계산기
+                </button>
+              </div>
+            </div>
+            <!-- 퍼센트 찾기 -->
+            <div id="percentage-finder-content" class="table-wrapper">
+              <table>
+                <thead>
+                  <tr>
+                    <th>퍼센트</th>
+                    <th>계산</th>
+                    <th>올림</th>
+                    <th>반올림</th>
+                    <th>내림</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="dropdown-cell">
+                      <select id="percentage-finder-select">
+                        <!-- 동적으로 생성됨 -->
+                      </select>
+                    </td>
+                    <td id="percent-calc">0</td>
+                    <td id="percent-ceil">0</td>
+                    <td id="percent-round">0</td>
+                    <td id="percent-floor">0</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <!-- 역산계산기 -->
+            <div id="reverse-calc-content" class="table-wrapper" style="display: none; white-space: nowrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>상대 무게</th>
+                    <th>퍼센트</th>
+                    <th>내 무게</th>
+                    <th>올림</th>
+                    <th>반올림</th>
+                    <th>내림</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>
+                      <input
+                        type="number"
+                        id="reverse-weight-input"
+                        placeholder="무게 입력"
+                        style="
+                          width: 100%;
+                          padding: 8px;
+                          border: 1.5px solid #d1d5db;
+                          border-radius: 8px;
+                          text-align: center;
+                        " />
+                    </td>
+                    <td id="reverse-percent" class="yellow-cell">0%</td>
+                    <td>
+                      <input
+                        type="number"
+                        id="reverse-my-weight-input"
+                        placeholder="무게 입력"
+                        style="
+                          width: 100%;
+                          padding: 8px;
+                          border: 1.5px solid #d1d5db;
+                          border-radius: 8px;
+                          text-align: center;
+                        " />
+                    </td>
+                    <td id="reverse-ceil" class="yellow-cell">0</td>
+                    <td id="reverse-round" class="yellow-cell">0</td>
+                    <td id="reverse-floor" class="yellow-cell">0</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 훈련 프로그램 -->
+      <div class="section">
+        <div class="section-header red-header">훈련 프로그램</div>
+        <div class="template-controls">
+          <select class="dropdown" id="template-exercise-select">
+            <!-- 동적으로 생성됨 -->
+          </select>
+          <select class="dropdown" id="template-week-select">
+            <option value="all" selected>전체</option>
+            <option value="1">1주차</option>
+            <option value="2">2주차</option>
+            <option value="3">3주차</option>
+            <option value="4">4주차</option>
+          </select>
+          <select class="dropdown" id="template-category-select">
+            <option value="all">전체</option>
+            <option value="Main">Main</option>
+            <option value="Sub">Sub</option>
+          </select>
+          <button class="btn-primary" id="template-edit-btn" style="margin-left: auto; white-space: nowrap">
+            수정
+          </button>
+          <button class="btn-primary" id="template-add-row-btn" style="display: none; white-space: nowrap">
+            행 추가
+          </button>
+        </div>
+        <div class="table-wrapper">
+          <table>
+            <thead>
+              <tr id="template-header" style="white-space: nowrap">
+                <th>종목</th>
+                <th>주차</th>
+                <th>운동 구분</th>
+                <th>퍼센트</th>
+                <th>REP</th>
+                <th>ROUND</th>
+                <th>올림</th>
+                <th>반올림</th>
+                <th>내림</th>
+                <th>비고</th>
+                <th id="delete-header" style="display: none">삭제</th>
+              </tr>
+            </thead>
+            <tbody id="template-body" style="white-space: nowrap">
+              <!-- 동적으로 생성됨 -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>

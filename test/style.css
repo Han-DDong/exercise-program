@@ -1,0 +1,475 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont, system-ui, Roboto, "Helvetica Neue",
+    "Segoe UI", "Apple SD Gothic Neo", "Noto Sans KR", "Malgun Gothic", "Apple Color Emoji", "Segoe UI Emoji",
+    "Segoe UI Symbol", sans-serif;
+  background: #f0f2f5;
+  min-height: 100vh;
+  padding: 20px;
+}
+
+.container {
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.section {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  margin-bottom: 20px;
+  padding: 24px;
+  border: 1px solid #e8eaf0;
+}
+
+.section-header {
+  text-align: center;
+  padding: 16px 20px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  font-weight: 700;
+  font-size: 21px;
+  letter-spacing: -0.3px;
+  color: white;
+}
+
+.pink-header {
+  background: #ff6b9d;
+  box-shadow: 0 2px 8px rgba(255, 107, 157, 0.25);
+}
+
+.yellow-header {
+  background: #feca57;
+  box-shadow: 0 2px 8px rgba(254, 202, 87, 0.25);
+}
+
+.red-header {
+  background: #ff6b6b;
+  box-shadow: 0 2px 8px rgba(255, 107, 107, 0.25);
+}
+
+table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  font-size: 18px;
+}
+
+th,
+td {
+  border: 1px solid #e8eaf0;
+  padding: 14px;
+  text-align: center;
+  transition: background-color 0.2s ease;
+}
+
+th {
+  background: #667eea;
+  color: white;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  border: none;
+}
+
+th:first-child {
+  border-top-left-radius: 8px;
+}
+
+th:last-child {
+  border-top-right-radius: 8px;
+}
+
+tbody tr {
+  background: white;
+}
+
+tbody tr:hover {
+  background: #f8f9fa;
+}
+
+tbody tr:nth-child(even) {
+  background: #fafbfc;
+}
+
+tbody tr:nth-child(even):hover {
+  background: #f1f3f5;
+}
+
+.highlight-row {
+  background: #e3f2fd !important;
+  font-weight: 600;
+}
+
+.highlight-row:hover {
+  background: #bbdefb !important;
+}
+
+.yellow-cell {
+  background: #fff9c4;
+  font-weight: 600;
+}
+
+.exercise-btn {
+  background: #ff6b6b;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 17px;
+  font-weight: 600;
+  width: 100%;
+  transition: all 0.2s ease;
+}
+
+.exercise-btn:hover {
+  background: #ff5252;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(255, 107, 107, 0.3);
+}
+
+.exercise-btn:active {
+  transform: translateY(0);
+}
+
+.dropdown {
+  width: 30%;
+  padding: 10px 14px;
+  border: 1.5px solid #d1d5db;
+  border-radius: 8px;
+  background: white;
+  font-size: 16px;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.dropdown:hover {
+  border-color: #667eea;
+}
+
+.dropdown:focus {
+  outline: none;
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-bottom: 20px;
+  align-items: stretch;
+}
+
+.grid-container > div {
+  display: flex;
+  flex-direction: column;
+}
+
+.grid-container > div:first-child .section {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.grid-container > div:first-child .section .table-wrapper {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  overflow: auto;
+}
+
+.grid-container > div:first-child .section table {
+  height: 100%;
+}
+
+.grid-container > div:last-child {
+  min-height: 0;
+}
+
+.grid-container > div:last-child .section {
+  flex-shrink: 0;
+}
+
+.grid-container > div:last-child .section:first-child {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.grid-container > div:last-child .section:first-child .table-wrapper {
+  flex: 1;
+  min-height: 0;
+  overflow: auto;
+}
+
+.template-controls {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 20px;
+  flex-wrap: nowrap;
+  align-items: center;
+}
+
+.btn-primary {
+  background: #667eea;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 16px;
+  transition: all 0.2s ease;
+}
+
+.btn-primary:hover {
+  background: #5568d3;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+}
+
+.btn-primary:active {
+  transform: translateY(0);
+}
+
+/* 태블릿 */
+@media (max-width: 1024px) {
+  .grid-container {
+    grid-template-columns: 1fr;
+  }
+
+  body {
+    padding: 12px;
+  }
+
+  .section {
+    padding: 16px;
+  }
+
+  .template-controls {
+    flex-wrap: wrap;
+  }
+
+  .dropdown {
+    width: calc(50% - 6px);
+    min-width: 140px;
+  }
+}
+
+/* 모바일 */
+@media (max-width: 768px) {
+  body {
+    padding: 8px;
+  }
+
+  .container {
+    width: 100%;
+  }
+
+  .section {
+    padding: 12px;
+    margin-bottom: 16px;
+    border-radius: 8px;
+  }
+
+  .section-header {
+    padding: 12px 16px;
+    font-size: 18px;
+    margin-bottom: 16px;
+  }
+
+  table {
+    font-size: 14px;
+  }
+
+  th,
+  td {
+    padding: 8px 6px;
+    font-size: 14px;
+  }
+
+  .exercise-btn {
+    padding: 8px 16px;
+    font-size: 14px;
+  }
+
+  .btn-primary {
+    padding: 10px 16px;
+    font-size: 14px;
+  }
+
+  .template-controls {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .template-controls .dropdown {
+    width: 100%;
+  }
+
+  .template-controls .btn-primary {
+    width: 100%;
+    margin-left: 0 !important;
+  }
+
+  .dropdown {
+    width: 100%;
+    padding: 10px 12px;
+    font-size: 14px;
+  }
+
+  .grid-container {
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+
+  input[type="date"] {
+    font-size: 14px;
+    padding: 8px;
+  }
+
+  [contenteditable="true"] {
+    font-size: 14px;
+    padding: 4px 6px;
+  }
+}
+
+/* 작은 모바일 */
+@media (max-width: 480px) {
+  body {
+    padding: 4px;
+  }
+
+  .section {
+    padding: 10px;
+    margin-bottom: 12px;
+  }
+
+  .section-header {
+    padding: 10px 12px;
+    font-size: 16px;
+    margin-bottom: 12px;
+  }
+
+  table {
+    font-size: 12px;
+  }
+
+  th,
+  td {
+    padding: 6px 4px;
+    font-size: 12px;
+  }
+
+  .exercise-btn {
+    padding: 6px 12px;
+    font-size: 12px;
+  }
+
+  .btn-primary {
+    padding: 8px 14px;
+    font-size: 12px;
+  }
+
+  .dropdown {
+    padding: 8px 10px;
+    font-size: 12px;
+  }
+
+  input[type="date"] {
+    font-size: 12px;
+    padding: 6px;
+  }
+
+  [contenteditable="true"] {
+    font-size: 12px;
+    padding: 3px 4px;
+  }
+}
+
+.table-wrapper {
+  overflow-x: auto;
+  border-radius: 8px;
+}
+
+.dropdown-cell select {
+  background: white;
+  border: 1.5px solid #d1d5db;
+  padding: 8px;
+  border-radius: 8px;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  width: 100%;
+}
+
+.dropdown-cell select:hover {
+  border-color: #667eea;
+}
+
+.dropdown-cell select:focus {
+  outline: none;
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+/* 입력 필드 스타일 */
+input[type="date"] {
+  border: 1.5px solid #d1d5db;
+  border-radius: 8px;
+  padding: 8px;
+  transition: all 0.2s ease;
+  font-size: 16px;
+  width: 100%;
+}
+
+input[type="date"]:hover {
+  border-color: #667eea;
+}
+
+input[type="date"]:focus {
+  outline: none;
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+/* 편집 가능한 셀 스타일 */
+[contenteditable="true"] {
+  border-radius: 4px;
+  transition: all 0.2s ease;
+  padding: 4px 8px;
+  min-height: 24px;
+}
+
+[contenteditable="true"]:focus {
+  outline: 2px solid #667eea;
+  outline-offset: 2px;
+  background: #f8f9ff !important;
+}
+
+/* 탭 버튼 스타일 */
+.tab-btn {
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 18px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.tab-btn:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
