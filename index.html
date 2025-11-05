@@ -19,7 +19,22 @@
         <div>
           <!-- 운동 종목별 퍼센트 계산기 -->
           <div class="section">
-            <div class="section-header pink-header" id="exercise-calculator-header">프론트 스쿼트</div>
+            <div class="section-header pink-header">
+              <select
+                id="exercise-calculator-select"
+                class="dropdown"
+                style="
+                  background: rgba(255, 255, 255, 0.2);
+                  color: white;
+                  border: 1px solid rgba(255, 255, 255, 0.3);
+                  font-size: inherit;
+                  font-weight: inherit;
+                  padding: 4px 8px;
+                  border-radius: 4px;
+                ">
+                <!-- 동적으로 생성됨 -->
+              </select>
+            </div>
             <div class="table-wrapper">
               <table id="percentage-table">
                 <thead>
@@ -146,7 +161,7 @@
                   <tr>
                     <td>
                       <input
-                        type="number"
+                        type="text"
                         id="reverse-weight-input"
                         placeholder="무게 입력"
                         style="
@@ -157,12 +172,11 @@
                           text-align: center;
                         " />
                     </td>
-                    <td id="reverse-percent" class="yellow-cell">0%</td>
                     <td>
                       <input
-                        type="number"
-                        id="reverse-my-weight-input"
-                        placeholder="무게 입력"
+                        type="text"
+                        id="reverse-percent-input"
+                        placeholder="퍼센트 입력"
                         style="
                           width: 100%;
                           padding: 8px;
@@ -171,6 +185,7 @@
                           text-align: center;
                         " />
                     </td>
+                    <td id="reverse-my-weight" class="yellow-cell">0</td>
                     <td id="reverse-ceil" class="yellow-cell">0</td>
                     <td id="reverse-round" class="yellow-cell">0</td>
                     <td id="reverse-floor" class="yellow-cell">0</td>
