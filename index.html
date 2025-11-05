@@ -157,10 +157,14 @@
             </div>
             <!-- 역산계산기 -->
             <div id="reverse-calc-content" class="table-wrapper" style="display: none; white-space: nowrap">
+              <div style="text-align: center; font-size: 18px; font-weight: bold; margin-bottom: 15px">
+                🙌 상대 무게 = 상대의 1RM 입력 🙌
+              </div>
               <table>
                 <thead>
                   <tr>
                     <th>상대 무게</th>
+                    <th>역산할 무게</th>
                     <th>퍼센트</th>
                     <th>내 무게</th>
                     <th>올림</th>
@@ -174,7 +178,7 @@
                       <input
                         type="text"
                         id="reverse-weight-input"
-                        placeholder="무게 입력"
+                        placeholder="상대 무게"
                         style="
                           width: 100%;
                           padding: 8px;
@@ -184,21 +188,19 @@
                         " />
                     </td>
                     <td>
-                      <div style="display: flex; align-items: center; justify-content: center; gap: 4px">
-                        <input
-                          type="text"
-                          id="reverse-percent-input"
-                          placeholder="퍼센트 입력"
-                          style="
-                            width: 100%;
-                            padding: 8px;
-                            border: 1.5px solid #d1d5db;
-                            border-radius: 8px;
-                            text-align: center;
-                          " />
-                        <span style="font-size: 16px; font-weight: 600">%</span>
-                      </div>
+                      <input
+                        type="text"
+                        id="reverse-reverse-weight-input"
+                        placeholder="역산할 무게"
+                        style="
+                          width: 100%;
+                          padding: 8px;
+                          border: 1.5px solid #d1d5db;
+                          border-radius: 8px;
+                          text-align: center;
+                        " />
                     </td>
+                    <td id="reverse-percent" class="yellow-cell">0%</td>
                     <td id="reverse-my-weight" class="yellow-cell">0</td>
                     <td id="reverse-ceil" class="yellow-cell">0</td>
                     <td id="reverse-round" class="yellow-cell">0</td>
