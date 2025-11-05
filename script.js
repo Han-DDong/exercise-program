@@ -437,12 +437,14 @@ function updatePercentageFinder() {
 // 역산계산기 업데이트
 function updateReverseCalculator() {
   const relativeWeightInput = document.getElementById("reverse-weight-input");
-  const percentInput = document.getElementById("reverse-percent-input");
+  const reverseWeightInput = document.getElementById("reverse-reverse-weight-input");
 
-  const percent = parseFloat(percentInput.value) || 0;
+  const relativeWeight = parseFloat(relativeWeightInput.value) || 0;
+  const reverseWeight = parseFloat(reverseWeightInput.value) || 0;
 
-  // 퍼센트와 선택된 운동이 있어야 계산
-  if (percent === 0) {
+  // 상대 무게(1RM)와 역산할 무게 둘 다 입력되어야 계산
+  if (relativeWeight === 0 || reverseWeight === 0) {
+    document.getElementById("reverse-percent").textContent = "0%";
     document.getElementById("reverse-my-weight").textContent = "0";
     document.getElementById("reverse-ceil").textContent = "0";
     document.getElementById("reverse-round").textContent = "0";
@@ -450,7 +452,14 @@ function updateReverseCalculator() {
     return;
   }
 
-  // 선택된 운동이 없으면 계산하지 않음
+  // 역산 퍼센트 계산: 역산할 무게 / 상대 무게(1RM)
+  // 예: 상대 무게(1RM) = 535, 역산할 무게 = 255
+  // 역산 퍼센트 = 255 / 535 = 약 47.66%
+  const reversePercent = reverseWeight / relativeWeight;
+  const reversePercentDisplay = Math.round(reversePercent * 100); // 정수로 반올림
+  document.getElementById("reverse-percent").textContent = `${reversePercentDisplay}%`;
+
+  // 선택된 운동이 없으면 역산 퍼센트만 표시하고 내 무게는 0
   if (!selectedExercise || !exerciseData[selectedExercise]) {
     document.getElementById("reverse-my-weight").textContent = "0";
     document.getElementById("reverse-ceil").textContent = "0";
@@ -471,11 +480,12 @@ function updateReverseCalculator() {
     return;
   }
 
-  // 내 무게 계산: 현재 선택된 운동 종목의 1RM의 퍼센트
-  // 예: 프론트 스쿼트 1RM이 335이고, 퍼센트가 80%라면, 내 무게 = 335 × 0.8 = 268
-  const myWeight = (my1RM * percent) / 100;
+  // 역산된 내 무게 계산: 내 무게(1RM) * 역산 퍼센트
+  // 예: 내 무게(1RM) = 135, 역산 퍼센트 = 0.4766
+  // 역산된 내 무게 = 135 * 0.4766 = 약 64.3
+  const myWeight = my1RM * reversePercent;
 
-  // 계산된 내 무게 표시 (정수 반올림)
+  // 계산된 역산된 내 무게 표시 (정수 반올림)
   const roundedWeight = Math.round(myWeight);
   document.getElementById("reverse-my-weight").textContent = roundedWeight;
 
@@ -512,11 +522,11 @@ function switchCalculatorTab(tab) {
 // 역산계산기 초기화
 function initReverseCalculator() {
   const relativeWeightInput = document.getElementById("reverse-weight-input");
-  const percentInput = document.getElementById("reverse-percent-input");
+  const reverseWeightInput = document.getElementById("reverse-reverse-weight-input");
 
-  if (!relativeWeightInput || !percentInput) return;
+  if (!relativeWeightInput || !reverseWeightInput) return;
 
-  // 상대 무게 입력 이벤트
+  // 상대 무게(1RM) 입력 이벤트
   if (!relativeWeightInput.hasAttribute("data-listener")) {
     relativeWeightInput.setAttribute("data-listener", "true");
     relativeWeightInput.addEventListener("input", () => {
@@ -524,10 +534,10 @@ function initReverseCalculator() {
     });
   }
 
-  // 퍼센트 입력 이벤트
-  if (!percentInput.hasAttribute("data-listener")) {
-    percentInput.setAttribute("data-listener", "true");
-    percentInput.addEventListener("input", () => {
+  // 역산할 무게 입력 이벤트
+  if (!reverseWeightInput.hasAttribute("data-listener")) {
+    reverseWeightInput.setAttribute("data-listener", "true");
+    reverseWeightInput.addEventListener("input", () => {
       updateReverseCalculator();
     });
   }
