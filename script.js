@@ -95,13 +95,44 @@ function inputToDateFormat(dateStr) {
   return dateStr.replace(/-/g, ".");
 }
 
+// 헤더 dropdown 생성 및 업데이트
+function generateExerciseCalculatorSelect() {
+  const select = document.getElementById("exercise-calculator-select");
+  if (!select) return;
+
+  select.innerHTML = "";
+  const exercises = Object.keys(exerciseData);
+
+  exercises.forEach((exerciseName) => {
+    const option = document.createElement("option");
+    option.value = exerciseName;
+    option.textContent = exerciseName;
+    if (exerciseName === selectedExercise) {
+      option.selected = true;
+    }
+    select.appendChild(option);
+  });
+
+  // dropdown change 이벤트 (한 번만 추가)
+  if (!select.hasAttribute("data-listener")) {
+    select.setAttribute("data-listener", "true");
+    select.addEventListener("change", (e) => {
+      selectedExercise = e.target.value;
+      saveSelectedExercise(selectedExercise);
+      generatePercentageTable();
+      generateExerciseList();
+      generatePercentageFinder();
+      generateTemplate();
+      updateReverseCalculator();
+    });
+  }
+}
+
 // 퍼센트 테이블 생성
 function generatePercentageTable() {
   const tbody = document.getElementById("percentage-table-body");
   const exercise = exerciseData[selectedExercise];
   const baseWeight = exercise ? exercise.lb : 0;
-  const header = document.getElementById("exercise-calculator-header");
-  header.textContent = selectedExercise;
 
   tbody.innerHTML = "";
   const percentages = [
@@ -174,10 +205,12 @@ function generateExerciseList() {
         if (e.target.dataset.exercise) {
           selectedExercise = e.target.dataset.exercise;
           saveSelectedExercise(selectedExercise); // 마지막 선택 운동 저장
+          generateExerciseCalculatorSelect();
           generatePercentageTable();
           generateExerciseList();
           generatePercentageFinder();
           generateTemplate();
+          updateReverseCalculator();
         }
       });
     });
@@ -220,6 +253,7 @@ function generateExerciseList() {
               saveSelectedExercise(selectedExercise); // 마지막 선택 운동 저장
             }
             saveData(exerciseData);
+            generateExerciseCalculatorSelect();
             generatePercentageTable();
             generateExerciseList();
             generateBig3();
@@ -313,6 +347,7 @@ function deleteExerciseRow(exerciseName) {
       saveSelectedExercise(selectedExercise); // 마지막 선택 운동 저장
     }
     saveData(exerciseData);
+    generateExerciseCalculatorSelect();
     generatePercentageTable();
     generateExerciseList();
     generateBig3();
@@ -374,10 +409,7 @@ function generatePercentageFinder() {
   updatePercentageFinder();
 
   // 역산계산기 초기화 (한 번만)
-  if (!document.getElementById("reverse-weight-input").hasAttribute("data-listener")) {
-    initReverseCalculator();
-    document.getElementById("reverse-weight-input").setAttribute("data-listener", "true");
-  }
+  initReverseCalculator();
 }
 
 function updatePercentageFinder() {
@@ -396,28 +428,52 @@ function updatePercentageFinder() {
 // 역산계산기 업데이트
 function updateReverseCalculator() {
   const relativeWeightInput = document.getElementById("reverse-weight-input");
-  const myWeightInput = document.getElementById("reverse-my-weight-input");
+  const percentInput = document.getElementById("reverse-percent-input");
 
-  const relativeWeight = parseFloat(relativeWeightInput.value) || 0;
-  const myWeight = parseFloat(myWeightInput.value) || 0;
+  const percent = parseFloat(percentInput.value) || 0;
 
-  // 상대 무게와 내 무게 둘 다 입력되어야 계산
-  if (relativeWeight === 0 || myWeight === 0) {
-    document.getElementById("reverse-percent").textContent = "0%";
+  // 퍼센트와 선택된 운동이 있어야 계산
+  if (percent === 0) {
+    document.getElementById("reverse-my-weight").textContent = "0";
     document.getElementById("reverse-ceil").textContent = "0";
     document.getElementById("reverse-round").textContent = "0";
     document.getElementById("reverse-floor").textContent = "0";
     return;
   }
 
-  // 퍼센트 계산: 상대 무게 / 내 무게 * 100
-  const percent = Math.round((relativeWeight / myWeight) * 100 * 10) / 10;
-  document.getElementById("reverse-percent").textContent = `${percent}%`;
+  // 선택된 운동이 없으면 계산하지 않음
+  if (!selectedExercise || !exerciseData[selectedExercise]) {
+    document.getElementById("reverse-my-weight").textContent = "0";
+    document.getElementById("reverse-ceil").textContent = "0";
+    document.getElementById("reverse-round").textContent = "0";
+    document.getElementById("reverse-floor").textContent = "0";
+    return;
+  }
 
-  // 올림, 반올림, 내림 (5단위) - 상대 무게 기준
-  document.getElementById("reverse-ceil").textContent = roundUp5(relativeWeight);
-  document.getElementById("reverse-round").textContent = roundNearest5(relativeWeight);
-  document.getElementById("reverse-floor").textContent = roundDown5(relativeWeight);
+  // 현재 선택된 운동 종목의 1RM 가져오기
+  const exercise = exerciseData[selectedExercise];
+  const my1RM = exercise ? exercise.lb : 0;
+
+  if (my1RM === 0) {
+    document.getElementById("reverse-my-weight").textContent = "0";
+    document.getElementById("reverse-ceil").textContent = "0";
+    document.getElementById("reverse-round").textContent = "0";
+    document.getElementById("reverse-floor").textContent = "0";
+    return;
+  }
+
+  // 내 무게 계산: 현재 선택된 운동 종목의 1RM의 퍼센트
+  // 예: 프론트 스쿼트 1RM이 335이고, 퍼센트가 80%라면, 내 무게 = 335 × 0.8 = 268
+  const myWeight = (my1RM * percent) / 100;
+
+  // 계산된 내 무게 표시 (정수 반올림)
+  const roundedWeight = Math.round(myWeight);
+  document.getElementById("reverse-my-weight").textContent = roundedWeight;
+
+  // 올림, 반올림, 내림 (일반적인 올림/반올림/내림)
+  document.getElementById("reverse-ceil").textContent = Math.ceil(myWeight);
+  document.getElementById("reverse-round").textContent = roundedWeight;
+  document.getElementById("reverse-floor").textContent = Math.floor(myWeight);
 }
 
 // 탭 전환 함수
@@ -447,30 +503,38 @@ function switchCalculatorTab(tab) {
 // 역산계산기 초기화
 function initReverseCalculator() {
   const relativeWeightInput = document.getElementById("reverse-weight-input");
-  const myWeightInput = document.getElementById("reverse-my-weight-input");
+  const percentInput = document.getElementById("reverse-percent-input");
+
+  if (!relativeWeightInput || !percentInput) return;
 
   // 상대 무게 입력 이벤트
-  relativeWeightInput.addEventListener("input", () => {
-    updateReverseCalculator();
-  });
+  if (!relativeWeightInput.hasAttribute("data-listener")) {
+    relativeWeightInput.setAttribute("data-listener", "true");
+    relativeWeightInput.addEventListener("input", () => {
+      updateReverseCalculator();
+    });
+  }
 
-  // 내 무게 입력 이벤트
-  myWeightInput.addEventListener("input", () => {
-    updateReverseCalculator();
-  });
+  // 퍼센트 입력 이벤트
+  if (!percentInput.hasAttribute("data-listener")) {
+    percentInput.setAttribute("data-listener", "true");
+    percentInput.addEventListener("input", () => {
+      updateReverseCalculator();
+    });
+  }
 
   // 탭 전환 이벤트 (한 번만 추가)
   const percentageTab = document.getElementById("percentage-finder-tab");
   const reverseTab = document.getElementById("reverse-calc-tab");
 
-  if (!percentageTab.hasAttribute("data-listener")) {
+  if (percentageTab && !percentageTab.hasAttribute("data-listener")) {
     percentageTab.setAttribute("data-listener", "true");
     percentageTab.addEventListener("click", () => {
       switchCalculatorTab("percentage");
     });
   }
 
-  if (!reverseTab.hasAttribute("data-listener")) {
+  if (reverseTab && !reverseTab.hasAttribute("data-listener")) {
     reverseTab.setAttribute("data-listener", "true");
     reverseTab.addEventListener("click", () => {
       switchCalculatorTab("reverse");
@@ -497,10 +561,12 @@ function generateTemplate() {
   exerciseSelect.addEventListener("change", (e) => {
     selectedExercise = e.target.value;
     saveSelectedExercise(selectedExercise); // 마지막 선택 운동 저장
+    generateExerciseCalculatorSelect();
     generatePercentageTable();
     generateExerciseList();
     generatePercentageFinder();
     generateTemplate();
+    updateReverseCalculator();
   });
 
   const weekSelect = document.getElementById("template-week-select");
@@ -776,6 +842,7 @@ function init() {
     }
   }
 
+  generateExerciseCalculatorSelect();
   generatePercentageTable();
   generateExerciseList();
   generateBig3();
