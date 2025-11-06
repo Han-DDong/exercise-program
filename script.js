@@ -489,10 +489,10 @@ function updateReverseCalculator() {
   const roundedWeight = Math.round(myWeight);
   document.getElementById("reverse-my-weight").textContent = roundedWeight;
 
-  // 올림, 반올림, 내림 (일반적인 올림/반올림/내림)
-  document.getElementById("reverse-ceil").textContent = Math.ceil(myWeight);
-  document.getElementById("reverse-round").textContent = roundedWeight;
-  document.getElementById("reverse-floor").textContent = Math.floor(myWeight);
+  // 올림, 반올림, 내림 (5 단위 기준)
+  document.getElementById("reverse-ceil").textContent = roundUp5(myWeight);
+  document.getElementById("reverse-round").textContent = roundNearest5(myWeight);
+  document.getElementById("reverse-floor").textContent = roundDown5(myWeight);
 }
 
 // 탭 전환 함수
@@ -874,3 +874,4 @@ function init() {
 
 // 페이지 로드 시 초기화
 document.addEventListener("DOMContentLoaded", init);
+
