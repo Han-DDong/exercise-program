@@ -259,6 +259,7 @@ function generateExerciseList() {
             generateBig3();
             generatePercentageFinder();
             generateTemplate();
+            updateReverseCalculator();
           }
         } else if (field === "lb" || field === "kg") {
           value = parseFloat(value) || 0;
@@ -278,6 +279,7 @@ function generateExerciseList() {
           generateBig3();
           generatePercentageFinder();
           generateTemplate();
+          updateReverseCalculator();
         } else {
           exerciseData[exerciseName][field] = value;
           saveData(exerciseData);
@@ -874,4 +876,5 @@ function init() {
 
 // 페이지 로드 시 초기화
 document.addEventListener("DOMContentLoaded", init);
+
 
